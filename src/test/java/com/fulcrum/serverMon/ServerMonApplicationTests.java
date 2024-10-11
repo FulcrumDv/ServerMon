@@ -1,10 +1,10 @@
-package servermon.servermonitor;
+package com.fulcrum.serverMon;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class ServermonitorApplicationTests {
+class ServerMonApplicationTests {
 
 	@Test
 	void contextLoads() {
