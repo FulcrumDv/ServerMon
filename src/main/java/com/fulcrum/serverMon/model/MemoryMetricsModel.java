@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 public class MemoryMetricsModel {
@@ -13,7 +14,7 @@ public class MemoryMetricsModel {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private LocalDate timestamp;
+    private LocalDateTime timestamp;
     private long RamUsuage;
     private long RamAvailbale;
     private long RamTotal;
@@ -21,7 +22,7 @@ public class MemoryMetricsModel {
 
     public MemoryMetricsModel(){}
 
-    public MemoryMetricsModel(LocalDate timestamp, long RamUsuage, long RamAvailable, long RamTotal){
+    public MemoryMetricsModel(LocalDateTime timestamp, long RamUsuage, long RamAvailable, long RamTotal){
         this.timestamp = timestamp;
         this.RamUsuage = RamUsuage;
         this.RamAvailbale = RamAvailable;
@@ -60,11 +61,11 @@ public class MemoryMetricsModel {
         RamTotal = ramTotal;
     }
 
-    public LocalDate getTimestamp() {
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 

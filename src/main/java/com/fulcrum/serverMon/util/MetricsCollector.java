@@ -1,12 +1,15 @@
 package com.fulcrum.serverMon.util;
 
+import com.fulcrum.serverMon.model.MemoryMetricsModel;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;
+import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
 import com.fulcrum.serverMon.model.CpuMetricsModel;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -25,10 +28,20 @@ public class MetricsCollector {
         double loadPercentage = cpu.getSystemCpuLoad(1000) * 100;
         return new CpuMetricsModel(LocalDateTime.now(), cpuName, coreCount, loadPercentage, cpuTemp);}
 
-    @Scheduled(fixedRate = 30000)
-    public void collectAndSaveMetrics() {
-        CpuMetricsModel metrics = collectedCpuMetrics();
+      public static MemoryMetricsModel collectedRamMetrics(){
+        SystemInfo systemInformation = new SystemInfo();
+        HardwareAbstractionLayer hardwareLayer = systemInformation.getHardware();
+        GlobalMemory RAM = hardwareLayer.getMemory();
+
+        long RamTotal = RAM.getTotal();
+        long RamAvailable = RAM.getAvailable();
+        long RamUsuage = (RamTotal - RamAvailable) * 100;
+
+        return new MemoryMetricsModel(LocalDateTime.now(), RamUsuage, RamAvailable, RamTotal);
     }
+
+
+
 
     // collectedMemoryMetrics()
     // collectedGPUMetrics()
