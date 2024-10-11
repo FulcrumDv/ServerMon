@@ -21,18 +21,17 @@ public class CpuMetricsModel {
 
     private double loadPercentage;
     private double temp;
-    private double idlePercentage;
 
     public CpuMetricsModel() {
     }
 
-    public CpuMetricsModel(LocalDateTime timestamp, String cpuName, int coreCount, double loadPercentage, double temp, double idlePercentage) {
+    public CpuMetricsModel(LocalDateTime timestamp, String cpuName, int coreCount, double loadPercentage, double temp) {
         this.timestamp = timestamp;
         this.cpuName = cpuName;
         this.coreCount = coreCount;
         this.loadPercentage = loadPercentage;
         this.temp = temp;
-        this.idlePercentage = idlePercentage;
+
     }
 
     public String getCpuName() {
@@ -67,14 +66,6 @@ public class CpuMetricsModel {
         this.temp = temp;
     }
 
-    public double getIdlePercentage() {
-        return idlePercentage;
-    }
-
-    public void setIdlePercentage(double idlePercentage) {
-        this.idlePercentage = idlePercentage;
-    }
-
     public LocalDateTime getTimestamp() {
         return timestamp;
     }
@@ -92,7 +83,6 @@ public class CpuMetricsModel {
                 ", loadPercentage=" + loadPercentage +
                 ", temp=" + temp +
                 ", coreCount=" + coreCount +
-                ", idlePercentage=" + idlePercentage +
                 '}';
     }
 
