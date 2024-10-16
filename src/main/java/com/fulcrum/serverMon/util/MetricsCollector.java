@@ -58,12 +58,8 @@ public class MetricsCollector {
             partition.setTotalSpace(disk.getSize());
             long readBytes = disk.getReadBytes();
             long writeBytes = disk.getWriteBytes();
-            // This is a rough estimate of used space based on read and write activity
-            // You might want to adjust this calculation based on your specific needs
             long usedSpace = readBytes + writeBytes;
             partition.setUsedSpace(usedSpace);
-
-            // Add the partition to the partitions list, not the disks list
             partitions.add(partition);
         }
 
