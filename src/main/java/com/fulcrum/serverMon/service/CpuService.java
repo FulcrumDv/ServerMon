@@ -24,5 +24,5 @@ public class CpuService {
         CpuMetricsModel metrics = MetricsCollector.collectedCpuMetrics();
         cpuMetricsRepo.save(metrics);
     }
-}
 
+}

@@ -42,6 +42,10 @@
             font-size: 24px;
             font-weight: bold;
         }
+        .disk-details {
+            font-size: 14px;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
@@ -73,6 +77,15 @@
         </div>
         <div class="card-content" id="memory-usage">0%</div>
     </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Disk Usage</h3>
+            <svg class="card-icon" viewBox="0 0 24 24">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"/>
+            </svg>
+        </div>
+        <div id="disk-usage"></div>
+    </div>
 </div>
 
 <script>
@@ -93,10 +106,42 @@
             .then(data => {
                 if (data.length > 0) {
                     const latestMemoryMetric = data[data.length - 1];
-                    document.getElementById('memory-usage').textContent = latestMemoryMetric.ramUsage.toFixed(1)+ '%';
+                    document.getElementById('memory-usage').textContent = latestMemoryMetric.ramUsage.toFixed(1) + '%';
                 }
             })
             .catch(error => console.error('Error fetching memory metrics:', error));
+
+        fetch('/api/disk-metrics/getAll')
+            .then(response => response.json())
+            .then(data => {
+                const diskUsageElement = document.getElementById('disk-usage');
+                diskUsageElement.innerHTML = ''; // Clear previous content
+
+                if (data.length > 0) {
+                    const latestDiskMetrics = data[data.length - 1];
+                    for (const disk of latestDiskMetrics) {
+                        const usagePercentage = (disk.usedSpace / disk.totalSpace) * 100;
+                        const diskElement = document.createElement('div');
+                        diskElement.className = 'disk-details';
+                        diskElement.innerHTML = `
+                            <strong>${disk.name}</strong>: ${usagePercentage.toFixed(1)}%<br>
+                            Used: ${formatBytes(disk.usedSpace)} / ${formatBytes(disk.totalSpace)}
+                        `;
+                        diskUsageElement.appendChild(diskElement);
+                    }
+                } else {
+                    diskUsageElement.textContent = 'No disk data available';
+                }
+            })
+            .catch(error => console.error('Error fetching disk metrics:', error));
+    }
+
+    function formatBytes(bytes) {
+        if (bytes === 0) return '0 Bytes';
+        const k = 1024;
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
     }
 
     // Update metrics immediately and then every 5 seconds
