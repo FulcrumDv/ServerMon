@@ -15,16 +15,16 @@ public class MemoryMetricsModel {
     private Long id;
 
     private LocalDateTime timestamp;
-    private long RamUsuage;
+    private double RamUsage;
     private long RamAvailbale;
     private long RamTotal;
 
 
     public MemoryMetricsModel(){}
 
-    public MemoryMetricsModel(LocalDateTime timestamp, long RamUsuage, long RamAvailable, long RamTotal){
+    public MemoryMetricsModel(LocalDateTime timestamp, double RamUsage, long RamAvailable, long RamTotal){
         this.timestamp = timestamp;
-        this.RamUsuage = RamUsuage;
+        this.RamUsage = RamUsage;
         this.RamAvailbale = RamAvailable;
         this.RamTotal = RamTotal;
     }
@@ -37,12 +37,12 @@ public class MemoryMetricsModel {
         return id;
     }
 
-    public long getRamUsuage() {
-        return RamUsuage;
+    public double getRamUsage() {
+        return RamUsage;
     }
 
-    public void setRamUsuage(long ramUsuage) {
-        RamUsuage = ramUsuage;
+    public void setRamUsage(long ramUsage) {
+        RamUsage = ramUsage;
     }
 
     public long getRamAvailbale() {
@@ -74,7 +74,7 @@ public class MemoryMetricsModel {
         return "MemoryMetrics{" +
                 "id=" + id +
                 ", timestamp=" + timestamp +
-                ", RamUsuage" + RamUsuage +
+                ", RamUsage" + RamUsage +
                 ", RamAvailable" + RamAvailbale +
                 ", RamTotal" + RamTotal +
                 '}';

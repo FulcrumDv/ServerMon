@@ -15,7 +15,7 @@ public class CpuController {
 
     // Constructor injection of dependencies
     public CpuController(CpuService cpuMetricsService, CpuMetricsRepo cpuMetricsRepository) {
-        this.cpuMetricsService =        cpuMetricsService;
+        this.cpuMetricsService = cpuMetricsService;
         this.cpuMetricsRepository = cpuMetricsRepository;
     }
 
@@ -30,6 +30,5 @@ public class CpuController {
     public List<CpuMetricsModel> getAllMetrics() {
         return cpuMetricsRepository.findAll();
     }
-
 
 }

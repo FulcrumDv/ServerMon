@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metrics Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f0f0;
+        }
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 0;
+        }
+        .card-icon {
+            width: 24px;
+            height: 24px;
+            fill: #666;
+        }
+        .card-content {
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">CPU Load</h3>
+            <svg class="card-icon" viewBox="0 0 24 24">
+                <path d="M4 4h16v16H4V4zm1 1v14h14V5H5zm11 2h2v2h-2V7zm0 3h2v2h-2v-2zm0 3h2v2h-2v-2zm-3-6h2v2h-2V7zm0 3h2v2h-2v-2zm0 3h2v2h-2v-2zm-3-6h2v2h-2V7zm0 3h2v2h-2v-2zm0 3h2v2h-2v-2zm-3-6h2v2H7V7zm0 3h2v2H7v-2zm0 3h2v2H7v-2z"/>
+            </svg>
+        </div>
+        <div class="card-content" id="cpu-load">0%</div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">CPU Temperature</h3>
+            <svg class="card-icon" viewBox="0 0 24 24">
+                <path d="M12 2C8.13 2 5 5.13 5 9v7.5c0 2.21 1.79 4 4 4s4-1.79 4-4V9c0-1.66-1.34-3-3-3S7 7.34 7 9v7.5c0 1.38 1.12 2.5 2.5 2.5s2.5-1.12 2.5-2.5V9c0-.55-.45-1-1-1s-1 .45-1 1v7.5c0 .28.22.5.5.5s.5-.22.5-.5V9c0-1.66 1.34-3 3-3s3 1.34 3 3v7.5c0 2.21-1.79 4-4 4s-4-1.79-4-4V9c0-3.87 3.13-7 7-7s7 3.13 7 7v7.5c0 4.42-3.58 8-8 8s-8-3.58-8-8V9c0-5.52 4.48-10 10-10s10 4.48 10 10v7.5c0 6.08-4.92 11-11 11s-11-4.92-11-11V9c0-2.76 2.24-5 5-5s5 2.24 5 5v7.5c0 1.1-.9 2-2 2s-2-.9-2-2V9c0-.55.45-1 1-1s1 .45 1 1v7.5c0 1.93 1.57 3.5 3.5 3.5s3.5-1.57 3.5-3.5V9c0-3.31-2.69-6-6-6z"/>
+            </svg>
+        </div>
+        <div class="card-content" id="cpu-temp">0°C</div>
+    </div>
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Memory Usage</h3>
+            <svg class="card-icon" viewBox="0 0 24 24">
+                <path d="M2 20h20v-4H2v4zm2-3h2v2H4v-2zM2 4v4h20V4H2zm4 3H4V5h2v2zm-4 7h20v-4H2v4zm2-3h2v2H4v-2z"/>
+            </svg>
+        </div>
+        <div class="card-content" id="memory-usage">0%</div>
+    </div>
+</div>
+
+<script>
+    function updateMetrics() {
+        fetch('/api/cpu-metrics/getAll')
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    const latestCpuMetric = data[data.length - 1];
+                    document.getElementById('cpu-load').textContent = latestCpuMetric.loadPercentage.toFixed(1) + '%';
+                    document.getElementById('cpu-temp').textContent = latestCpuMetric.temp.toFixed(1) + '°C';
+                }
+            })
+            .catch(error => console.error('Error fetching CPU metrics:', error));
+
+        fetch('/api/ram-metrics/getAll')
+            .then(response => response.json())
+            .then(data => {
+                if (data.length > 0) {
+                    const latestMemoryMetric = data[data.length - 1];
+                    document.getElementById('memory-usage').textContent = latestMemoryMetric.ramUsage.toFixed(1)+ '%';
+                }
+            })
+            .catch(error => console.error('Error fetching memory metrics:', error));
+    }
+
+    // Update metrics immediately and then every 5 seconds
+    updateMetrics();
+    setInterval(updateMetrics, 5000);
+</script>
+</body>
+</html>

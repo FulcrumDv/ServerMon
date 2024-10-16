@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/ram/")
+@RequestMapping("api/ram-metrics/")
 class MemoryController {
 
     private MemoryService metricsService;

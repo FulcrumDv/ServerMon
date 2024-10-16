@@ -35,9 +35,9 @@ public class MetricsCollector {
 
         long RamTotal = RAM.getTotal();
         long RamAvailable = RAM.getAvailable();
-        long RamUsuage = (RamTotal - RamAvailable) * 100;
+        double RamUsage = ((RamTotal - RamAvailable) / (double) RamTotal) * 100;
 
-        return new MemoryMetricsModel(LocalDateTime.now(), RamUsuage, RamAvailable, RamTotal);
+        return new MemoryMetricsModel(LocalDateTime.now(), RamUsage, RamAvailable, RamTotal);
     }
 
 
